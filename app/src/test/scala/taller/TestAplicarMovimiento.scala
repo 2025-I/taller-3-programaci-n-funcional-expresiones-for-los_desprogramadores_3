@@ -39,6 +39,35 @@ class TestAplicarMovimiento extends AnyFunSuite {
     assert(e5 == (List('a','b','c','d'), List(), List()))
   }
 
+  test("Prueba3 - pasar algunos a auxiliar Dos y devolverlos") {
+    val e1 = (List('m','n','o','p'), List(), List())
+    val e2 = obj.aplicarMovimiento(e1, Dos(2))
+    assert(e2 == (List('m','n'), List(), List('o','p')))
+
+    val e3 = obj.aplicarMovimiento(e2, Dos(-1))
+    assert(e3 == (List('m','n','o'), List(), List('p')))
+
+    val e4 = obj.aplicarMovimiento(e3, Dos(-1))
+    assert(e4 == (List('m','n','o','p'), List(), List()))
+  }
+
+  test("Prueba5 - uso combinado de Uno y Dos") {
+    val e1 = (List('1','2','3','4','5'), List(), List())
+    val e2 = obj.aplicarMovimiento(e1, Uno(2))
+    assert(e2 == (List('1','2','3'), List('4','5'), List()))
+
+    val e3 = obj.aplicarMovimiento(e2, Dos(1))
+    assert(e3 == (List('1','2'), List('4','5'), List('3')))
+
+    val e4 = obj.aplicarMovimiento(e3, Uno(-1))
+    assert(e4 == (List('1','2','4'), List('5'), List('3')))
+
+    val e5 = obj.aplicarMovimiento(e4, Dos(-1))
+    assert(e5 == (List('1','2','4','3'), List('5'), List()))
+  }
+
+
+
   test("Prueba7 - inversión completa de un tren de 4 vagones") {
     val obj = new Maniobra()
     val e1 = (List('a', 'b', 'c', 'd'), List(), List())
