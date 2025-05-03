@@ -33,5 +33,35 @@ class Maniobra {
 
     aux(movs, List(e))
   }
+
+  def definirManiobra(t1: Tren, t2: Tren): Maniobra = {
+    val movimientos = List(-3, -2, -1, 1, 2, 3).flatMap(n => List(Uno(n), Dos(n)))
+
+    val estadoInicial: Estado = (t1, Nil, Nil)
+    val estadoObjetivo: Estado = (t2, Nil, Nil)
+
+    @tailrec
+    def buscar(pendientes: List[(Estado, Maniobra)], visitados: Set[Estado]): Option[Maniobra] = pendientes match {
+      case Nil => None
+      case (estadoActual, camino) :: resto =>
+        if (estadoActual == estadoObjetivo) Some(camino)
+        else {
+          val nuevos = for {
+            mov <- movimientos
+            nuevoEstado = aplicarMovimiento(estadoActual, mov)
+            if !visitados.contains(nuevoEstado)
+
+          } yield (nuevoEstado, camino :+ mov)
+
+          buscar(resto ++ nuevos, visitados ++ nuevos.map(_._1))
+
+          //buscar(resto ++ nuevos.sortBy(_._2.length), visitados ++ nuevos.map(_._1))
+        }
+    }
+
+    buscar(List((estadoInicial, Nil)), Set(estadoInicial)).getOrElse(Nil)
+
+  }
+
 }
 
