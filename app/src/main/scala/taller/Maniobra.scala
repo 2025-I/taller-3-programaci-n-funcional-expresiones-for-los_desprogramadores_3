@@ -24,5 +24,14 @@ class Maniobra {
       (e._1 ++ mover, e._2, resto)
     case _ => e
   }
+  def aplicarMovimientos(e: Estado, movs: Maniobra): List[Estado] = {
+    @tailrec
+    def aux(movs: Maniobra, acc: List[Estado]): List[Estado] = movs match {
+      case Nil => acc
+      case m :: ms => aux(ms, acc :+ aplicarMovimiento(acc.last, m))
+    }
+
+    aux(movs, List(e))
+  }
 }
 

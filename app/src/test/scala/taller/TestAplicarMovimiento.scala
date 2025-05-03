@@ -65,6 +65,25 @@ class TestAplicarMovimiento extends AnyFunSuite {
     val e12 = obj.aplicarMovimiento(e11, Uno(-1))
     assert(e12 == (List('d','c','b','a'), List(), List()))
   }
+
+  test("Prueba6 - combinación avanzada Uno y Dos con varios intercambios") {
+    val e1 = (List('a', 'b', 'c', 'd', 'e', 'f'), List(), List())
+    val e2 = obj.aplicarMovimiento(e1, Uno(3))
+    assert(e2 == (List('a', 'b', 'c'), List('d', 'e', 'f'), List()))
+    val e3 = obj.aplicarMovimiento(e2, Dos(2))
+    assert(e3 == (List('a'), List('d', 'e', 'f'), List('b', 'c')))
+    val e4 = obj.aplicarMovimiento(e3, Dos(-1))
+    assert(e4 == (List('a', 'b'), List('d', 'e', 'f'), List('c')))
+    val e5 = obj.aplicarMovimiento(e4, Uno(-2))
+    assert(e5 == (List('a', 'b', 'd', 'e'), List('f'), List('c')))
+    val e6 = obj.aplicarMovimiento(e5, Dos(1))
+    assert(e6 == (List('a', 'b', 'd'), List('f'), List('e', 'c')))
+    val e7 = obj.aplicarMovimiento(e6, Dos(-2))
+    assert(e7 == (List('a', 'b', 'd', 'e', 'c'), List('f'), List()))
+    val e8 = obj.aplicarMovimiento(e7, Uno(-1))
+    assert(e8 == (List('a', 'b', 'd', 'e', 'c', 'f'), List(), List()))
+  }
+
 }
 
 
