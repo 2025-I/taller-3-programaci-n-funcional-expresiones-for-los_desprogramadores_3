@@ -67,7 +67,6 @@ class TestAplicarMovimiento extends AnyFunSuite {
   }
 
 
-
   test("Prueba7 - inversión completa de un tren de 4 vagones") {
     val obj = new Maniobra()
     val e1 = (List('a', 'b', 'c', 'd'), List(), List())
@@ -111,6 +110,71 @@ class TestAplicarMovimiento extends AnyFunSuite {
     assert(e7 == (List('a', 'b', 'd', 'e', 'c'), List('f'), List()))
     val e8 = obj.aplicarMovimiento(e7, Uno(-1))
     assert(e8 == (List('a', 'b', 'd', 'e', 'c', 'f'), List(), List()))
+  }
+
+  test("Prueba con 100 movimientos") {
+    val e1: (List[Any], List[Any], List[Any]) = (List.fill(100)('c'), List(), List())
+
+    val estadoFinal = (1 to 100).foldLeft(e1) { (estado, i) =>
+      if (i % 2 == 1) {
+        // Movimiento Uno
+        obj.aplicarMovimiento(estado, Uno(i % 2 match {
+          case 0 => 2
+          case _ => -2
+        }))
+      } else {
+
+        obj.aplicarMovimiento(estado, Dos(i % 2 match {
+          case 0 => 4
+          case _ => -4
+        }))
+      }
+    }
+    assert(estadoFinal._1.size + estadoFinal._2.size + estadoFinal._3.size == 100)
+  }
+
+  test("Prueba con 500 movimientos") {
+    val e1: (List[Any], List[Any], List[Any]) = (List.fill(500)('c'), List(), List())
+
+
+    val estadoFinal = (1 to 500).foldLeft(e1) { (estado, i) =>
+      if (i % 2 == 1) {
+
+        obj.aplicarMovimiento(estado, Uno(i % 2 match {
+          case 0 => 2
+          case _ => -2
+        }))
+      } else {
+
+        obj.aplicarMovimiento(estado, Dos(i % 2 match {
+          case 0 => 4
+          case _ => -4
+        }))
+      }
+    }
+    assert(estadoFinal._1.size + estadoFinal._2.size + estadoFinal._3.size == 500)
+  }
+
+
+  test("Prueba con 1000 movimientos") {
+    val e1: (List[Any], List[Any], List[Any]) = (List.fill(1000)('c'), List(), List())
+
+    val estadoFinal = (1 to 1000).foldLeft(e1) { (estado, i) =>
+      if (i % 2 == 1) {
+
+        obj.aplicarMovimiento(estado, Uno(i % 2 match {
+          case 0 => 2
+          case _ => -2
+        }))
+      } else {
+
+        obj.aplicarMovimiento(estado, Dos(i % 2 match {
+          case 0 => 4
+          case _ => -4
+        }))
+      }
+    }
+    assert(estadoFinal._1.size + estadoFinal._2.size + estadoFinal._3.size == 1000)
   }
 
 }
